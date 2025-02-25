@@ -1,0 +1,26 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: var(--font-family);
+    background: linear-gradient(to bottom, #ebf4ff, #ffffff);
+    min-height: 100vh;
+    color: var(--color-gray-800);
+    line-height: 1.5;
+  }
+  
+  input, button, textarea, select {
+    font: inherit;
+  }
+  
+  button {
+    cursor: pointer;
+  }
+  
+  img, svg {
+    display: block;
+    max-width: 100%;
+  }

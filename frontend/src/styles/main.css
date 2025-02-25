@@ -1,0 +1,35 @@
+/* Base styles */
+@import './base/_variables.css';
+@import './base/_reset.css';
+
+/* Layout styles */
+@import './layout/_container.css';
+@import './layout/_header.css';
+@import './layout/_footer.css';
+
+/* Component styles */
+@import './components/_button.css';
+@import './components/_form.css';
+@import './components/_progress.css';
+@import './components/_report.css';
+
+/* Global styles */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-main {
+  flex: 1;
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .app-main {
+    padding: 0 var(--space-6);
+  }
+}

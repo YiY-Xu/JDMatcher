@@ -1,0 +1,142 @@
+.form-group {
+    margin-bottom: var(--space-4);
+  }
+  
+  .form-label {
+    display: block;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    margin-bottom: var(--space-1);
+    color: var(--color-gray-700);
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-gray-300);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-base);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .form-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+  
+  .form-input::placeholder {
+    color: var(--color-gray-500);
+  }
+  
+  .upload-container {
+    border: 2px dashed var(--color-gray-300);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    text-align: center;
+    transition: border-color 0.2s ease;
+    margin-bottom: var(--space-4);
+  }
+  
+  .upload-container:hover {
+    border-color: var(--color-primary);
+  }
+  
+  .upload-container.active {
+    border-color: var(--color-success);
+    background-color: rgba(34, 197, 94, 0.05);
+  }
+  
+  .upload-label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: var(--space-2);
+  }
+  
+  .upload-input {
+    display: none;
+  }
+  
+  .upload-button {
+    display: inline-block;
+    background-color: var(--color-primary);
+    color: white;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: var(--space-3);
+  }
+  
+  .upload-status {
+    margin-top: var(--space-2);
+    font-size: var(--font-size-sm);
+  }
+  
+  .status-success {
+    color: var(--color-success);
+  }
+  
+  .status-error {
+    color: var(--color-danger);
+  }
+
+/* Add to src/styles/components/_form.css */
+
+.input-button-row {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+  }
+  
+  .job-input-wrapper {
+    position: relative;
+    flex: 1;
+  }
+  
+  .job-input-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+    z-index: 1;
+  }
+  
+  .job-input {
+    width: 100%;
+    height: 100%;
+    padding: 10px 12px 10px 36px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+  
+  .button-group {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .analyze-btn, .reset-btn {
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  
+  .analyze-btn {
+    background-color: #e5e7eb;
+    border: none;
+    color: #374151;
+  }
+  
+  .analyze-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .reset-btn {
+    background-color: white;
+    border: 1px solid #d1d5db;
+    color: #374151;
+  }

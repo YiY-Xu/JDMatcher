@@ -1,0 +1,892 @@
+{
+  "name": "JDMatcherWF",
+  "nodes": [
+    {
+      "parameters": {
+        "bucketName": "retalking",
+        "fileKey": "={{ $json.key }}",
+        "binaryPropertyName": "resume"
+      },
+      "type": "n8n-nodes-base.awsS3",
+      "typeVersion": 2,
+      "position": [
+        -220,
+        -220
+      ],
+      "id": "fc86b33f-26f2-447f-94ba-4a015f98b9d8",
+      "name": "AWS S3",
+      "credentials": {
+        "aws": {
+          "id": "V6OTm81yzKTIuonU",
+          "name": "AWS account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.cloud.llamaindex.ai/api/parsing/upload",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "resume"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fc486433-49aa-4816-b786-0effe452aaea",
+      "name": "Upload to LlamaParse",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -20,
+        -220
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "wZ4m6ncwxPlvxffe",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.cloud.llamaindex.ai/api/parsing/job/{{ $json.id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "498cdddb-ea2e-47b4-b5d1-49cf50df0872",
+      "name": "Get Processing Status",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        180,
+        -220
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "wZ4m6ncwxPlvxffe",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "id": "2bc1ed1d-d357-4817-9fa0-c930debb94bf",
+      "name": "Wait to stay within service limits",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        600,
+        -160
+      ],
+      "webhookId": "17a96ed6-b5ff-47bb-a8a2-39c1eb40185a",
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "300fce8c-b19a-4d0c-86e8-f62853c70ce2",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "SUCCESS"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "SUCCESS"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "e6058aa0-a3e2-4ce3-9bed-6ff41a5be052",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "ERROR"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "ERROR"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "ceb6338f-4261-40ac-be11-91f61c7302ba",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "CANCELED"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "CANCELED"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "0fa97d86-432a-409a-917e-5f1a002b1ab9",
+                    "operator": {
+                      "name": "filter.operator.equals",
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "PENDING"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "PENDING"
+            }
+          ]
+        },
+        "options": {
+          "allMatchingOutputs": true
+        }
+      },
+      "id": "f3d67b1e-dd05-4ac5-8108-a6512bed0ae5",
+      "name": "Is Job Ready?",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        360,
+        -240
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "url": "=https://api.cloud.llamaindex.ai/api/parsing/job/{{ $json.id }}/result/markdown",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "ffea205a-b502-4a62-888c-fd3a698fdb55",
+      "name": "Get Parsed Resume",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        600,
+        -360
+      ],
+      "typeVersion": 4.2,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "wZ4m6ncwxPlvxffe",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "var values = $input.item.json.query.data.split(',');\nvar url = values[1]\nvar identifier = values[0]\nvar key = identifier.split('-')[0]\n\n// Function to validate URL using regex\nfunction isValidUrl(string) {\n    const urlPattern = /^(https?:\\/\\/)?([\\w\\-]+(\\.[\\w\\-]+)+)(:\\d+)?(\\/[^\\s]*)?$/i;\n    return urlPattern.test(string);\n}\n\n// Validate before returning\nif (isValidUrl(url)) {\n    return {'url': url, 'key': key, 'id': identifier};\n} else {\n    throw new Error(\"Invalid URL provided: \" + url);\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -400,
+        -60
+      ],
+      "id": "aca0fcde-6f10-4288-a19d-ea5955cfc81d",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:11235/crawl",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "urls",
+              "value": "={{ $json.url }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -220,
+        100
+      ],
+      "id": "68b67969-f180-4db6-aee5-960aa584fd01",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "iddcfCpEFFAq629u",
+          "name": "WebcrawlerAuth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        820,
+        -160
+      ],
+      "id": "3056f915-f10f-457f-9955-7a32826c115c",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "K4RL39uEbZVOU2Ea",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"email\": { \"type\": \"string\" },\n\t\"name\": { \"type\": \"string\" },\n    \"phone\": { \"type\": \"string\" },\n    \"Education\": { \"type\": \"array\" },\n    \"Experience\": { \"type\": \"array\" },\n    \"Skills\": { \"type\": \"array\" },\n    \"Strength\": { \"type\": \"array\" },\n    \"Patent\": { \"type\": \"array\" },\n    \"Certificate\": { \"type\": \"array\" }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        980,
+        -160
+      ],
+      "id": "0ccc7210-ba34-42a4-93cd-d99223853796",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        740,
+        260
+      ],
+      "id": "be1dd707-5962-4359-9db7-d1c7773f97c1",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "K4RL39uEbZVOU2Ea",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"position\": { \"type\": \"string\" },\n\t\"company\": { \"type\": \"string\" },\n    \"qualification\": { \"type\": \"array\" },\n    \"preferred Qualification\": { \"type\": \"array\" },\n    \"salary\": { \"type\": \"array\" }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        900,
+        260
+      ],
+      "id": "7a610180-e674-4d70-8008-75ffa80d3875",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        20,
+        100
+      ],
+      "id": "9d5862d8-c6b3-4658-aa29-e719f73e3304",
+      "name": "Wait",
+      "webhookId": "bbb141c6-1674-4b28-8ea9-4501faf95586"
+    },
+    {
+      "parameters": {
+        "url": "=http://localhost:11235/task/{{ $('HTTP Request').item.json.task_id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        100
+      ],
+      "id": "0f46b157-6257-44ec-a9e7-822e677e8c7d",
+      "name": "HTTP Request1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "iddcfCpEFFAq629u",
+          "name": "WebcrawlerAuth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "3011c0d5-642a-4116-901f-b4b6fa9042e9",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "completed",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        420,
+        100
+      ],
+      "id": "d3f49a83-8a2a-46bd-9518-413e806ba0d2",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1200,
+        -60
+      ],
+      "id": "de2afc58-2a78-40e5-b073-5438e8a913d0",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "if ($input.all().length!=2)\n{\n  throw Error\n}\nvar jd = $input.last().json.output\nvar resume = $input.first().json.output\n\nconst result = {\n  \"jd\": JSON.stringify(jd),\n  \"resume\": JSON.stringify(resume)\n}\nreturn result"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1380,
+        -60
+      ],
+      "id": "062b9b8e-83a8-40d9-bd9a-437482d736e1",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "resource": "assistant",
+        "assistantId": {
+          "__rl": true,
+          "value": "asst_vUdS6pSPURPt4kwOJqsgPKXv",
+          "mode": "list",
+          "cachedResultName": "HR Specialist"
+        },
+        "prompt": "define",
+        "text": "=You are a HR Specialist. You evaluate how much a candidate fits a position and gives a comprehensive report following below instructions. \n\n#instructions\n1. Read the {{ $json.resume }} to understand the candidate\n2. Read the {{ $json.jd }} to understand the position requirements\n\n#output\n1. Let the candidate understand how fit he/she is to the position in a scale of 10. \n2. If the score is equal or greater than 7, brief in bullets about where fits most and where are the gaps. \n3. Provide no more than 3 pieces of suggestions about how the candidate can tailor the resume to better fit the position\n4. If the score is equal or greater than 8.5, also output a cover letter for this position\n\nRestrictly follow the format: \n{\n  \"candidate\": \"Candidate's full name\",\n  \"position\": \"Job title and company\",\n  \"fitScore\": \"Fit score (as provided)\",\n  \"fitAnalysis\": {\n    \"strengths\": [\"List\", \"of\", \"strengths\"],\n    \"gaps\": [\"List\", \"of\", \"gaps\"]\n  },\n  \"resumeTailoringSuggestions\": [\"Suggestion 1\", \"Suggestion 2\", \"etc.\"],\n  \"coverLetter\": \"Full cover letter text\"\n}. \n\nYou can refer to an example:\n## Candidate Fit Evaluation\n\n### Candidate: Yi Xu\n### Position: Sr. Director, AI Engineering at Capital One\n### Fit Score: 9 / 10\n\n### Fit Analysis:\n#### Strengths:\n- **Education**: Yi Xu holds a Master's degree in both Information Systems Management and Computer Science, surpassing the educational requirement of a relevant Master's degree.\n- **Experience**: Yi Xu has extensive experience in leadership and AI development roles across high-profile tech companies, including Meta Platforms and Hewlett Packard Enterprise, with positions such as Core System Engineering Manager and CTO. This exceeds the basic requirement of 8 years of experience, with more than 5 years in people leadership roles.\n- **Technical Expertise**: Proficient in Artificial Intelligence, Machine Learning, and Cloud Computing, aligning closely with the job requirements for deploying scalable AI solutions on cloud platforms.\n- **Skills in AI Systems**: Experience with large-scale AI systems and transforming AI technologies into business solutions matches the job's preference for expertise in developing AI and ML algorithms and deploying them responsibly.\n- **Certifications**: Holds both PMP and CSM certificates, indicating strong project management and agile methodologies, which support effective team leadership.\n\n#### Gaps:\n- The experience with specific technologies such as LLM Inference, Similarity Search and VectorDBs could be more explicitly detailed to align perfectly with the job's preferred qualifications.\n\n### Resume Tailoring Suggestions:\n1. **Highlight Specific Technologies**: Include specific experiences or projects involving LLM Inference, Similarity Search, and VectorDBs to better align with Capital One's technical preferences.\n2. **Detail Cloud Platform Deployments**: Explicitly mention any experience with deploying AI solutions on particular cloud platforms like AWS, Google Cloud, or Azure in the resume.\n3. **Demonstrate AI Research Interest**: Add sections or examples in the resume that demonstrate a passion for AI research and the application of novel AI techniques.\n\n### Cover Letter\n\n---\nYi Xu  \nyi.xu.yiy@gmail.com | 412-758-4229  \n\n[Date]\n\nHiring Manager  \nCapital One  \n\nDear Hiring Manager,\n\nI am excited to apply for the Sr. Director of AI Engineering position at Capital One. With a robust academic background in both Information Systems Management and Computer Science and significant leadership experience in premier tech firms, I believe my skills closely align with the demands of this role.\n\nAt Meta Platforms, I led the Core System Engineering team to develop scalable AI systems that addressed complex market needs, and as a co-founder of TalkMeUp, I spearheaded AI projects that brought about impactful business solutions. My expertise in deploying these solutions on versatile cloud platforms, combined with my PMP and CSM certifications, further complements your requirements for cloud-native AI deployments and effective team leadership.\n\nI am particularly passionate about the evolving landscape of AI technologies and have a proven track record in integrating innovative AI solutions into production. I am eager to contribute to Capital One’s vision by leveraging my skills to develop, deploy, and manage cutting-edge AI applications.\n\nThank you for considering my application. I look forward to the opportunity to discuss how my background, skills, and enthusiasms align with the exciting work being done at Capital One.\n\nWarm regards,\n\nYi Xu\n\n--- \n\nPlease convert the text above into a JSON object following the structure provided.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1600,
+        -60
+      ],
+      "id": "962f08ef-a224-44a8-be66-aed1b43bb5c1",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "K4RL39uEbZVOU2Ea",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a HR expert. You will need to read the candidate's resume {{ $json.markdown }}. And then find several key information for this candidate including name, email, phone, past education, working experience with outstanding achievements and business impacts, the key skills that the candidates have, patents and certificates, and what are the candidate's strength. \nIf you cannot find the information for a specific item, then leave blank and skip to the next. \n\nThe detailed items are listed below too. \n\n- Name\n- Email\n- Phone\n- Education\n- Experience\n- Skills\n- Strength\n",
+        "hasOutputParser": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        820,
+        -360
+      ],
+      "id": "f6f712ac-ff75-4b7c-9bb1-e18b9f05e44f",
+      "name": "Resume Analyzer"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an expert of data extraction from text. You will need to extract below information from the {{ $('HTTP Request1').item.json.result.markdown }}. If you cannot the information for a specific item, then leave blank and skip to the next. \n\n- Position\n- Company\n- Qualification\n- Preferred Qualification\n- Salary",
+        "hasOutputParser": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        740,
+        80
+      ],
+      "id": "9d58225f-ae8c-40c6-b376-321820387503",
+      "name": "Position Analyzer"
+    },
+    {
+      "parameters": {
+        "path": "job-description",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -580,
+        -60
+      ],
+      "id": "df086905-4014-417c-8ea9-fca9d7e67daa",
+      "name": "Webhook Trigger",
+      "webhookId": "42df80e5-be83-4bc3-a574-86073f12cd53"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/api/receive-result",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1800,
+        200
+      ],
+      "id": "1038d21a-8133-4d78-8414-7578405b2c9b",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1340,
+        200
+      ],
+      "id": "bfb96bc5-74ea-4546-b9e7-1c55aabd4392",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "jsCode": "if ($input.all().length!=2)\n{\n  throw Error\n}\nvar result = $input.first().json.output\nvar compoundKey = $input.last().json\n\nconst output = {\"output\": {\n  \"result\": result,\n  \"compoundKey\": compoundKey\n}}\nreturn output"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1560,
+        200
+      ],
+      "id": "d2b7e87d-2da1-49a2-af24-2e0271a68c12",
+      "name": "Code2"
+    }
+  ],
+  "pinData": {
+    "OpenAI": [
+      {
+        "json": {
+          "output": "```json\n{\n  \"candidate\": \"Yi Xu\",\n \"email\": \"yi.xu.yiy@gmail.com\",  \"position\": \"Executive and HR Assistant at VacationLand Federal Credit Union\",\n  \"fitScore\": \"4 / 10\",\n  \"fitAnalysis\": {\n    \"strengths\": [\n      \"Experience with team leadership and cross-functional collaboration, which can be a partial asset in supporting senior management and HR teams.\"\n    ],\n    \"gaps\": [\n      \"Lack of specific experiences in administrative support roles or HR-related tasks that are central to this position.\",\n      \"Extensive technical and managerial background not aligning with the primary needs of an administrative assistant role.\",\n      \"No direct experience mentioned in interfacing with board of directors or handling union responsibilities, which are part of the qualification requirements.\"\n    ]\n  },\n  \"resumeTailoringSuggestions\": [\n    \"Highlight any past experiences, even if minimal, that involved administrative tasks or support roles.\",\n    \"Demonstrate proficiency in communication and multitasking which can be relevant in an administrative assistant role.\",\n    \"Detail any instances of interfacing with executives or managing confidential information, if applicable, to align more closely with role expectations.\"\n  ],\n  \"coverLetter\": \"\"\n}\n```",
+          "threadId": "thread_2oNHK3EKNzge1bYtNVMXxIH9"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "AWS S3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Position Analyzer",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AWS S3": {
+      "main": [
+        [
+          {
+            "node": "Upload to LlamaParse",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to LlamaParse": {
+      "main": [
+        [
+          {
+            "node": "Get Processing Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Processing Status": {
+      "main": [
+        [
+          {
+            "node": "Is Job Ready?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Job Ready?": {
+      "main": [
+        [
+          {
+            "node": "Get Parsed Resume",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [],
+        [],
+        [
+          {
+            "node": "Wait to stay within service limits",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait to stay within service limits": {
+      "main": [
+        [
+          {
+            "node": "Get Processing Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Parsed Resume": {
+      "main": [
+        [
+          {
+            "node": "Resume Analyzer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resume Analyzer": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Position Analyzer": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Position Analyzer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Position Analyzer",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Resume Analyzer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Resume Analyzer",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "cb9a43a1-d97f-4f9d-b3ca-8d899ca7e520",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3c2b0db3abb6f97db96ac37d66a18a2ecefa1dab268d539602caf9d1beeb942a"
+  },
+  "id": "eo1xXZ0nIVUKjsKP",
+  "tags": []
+}

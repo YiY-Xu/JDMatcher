@@ -1,0 +1,16 @@
+.container {
+    width: 100%;
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: var(--space-4);
+  }
+  
+  @media (min-width: 640px) {
+    .container {
+      padding: var(--space-6);
+    }
+  }
+  
+  .component-container {
+    margin-bottom: var(--space-4);
+  }
