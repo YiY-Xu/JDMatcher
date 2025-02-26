@@ -6,18 +6,15 @@ from app.routers import upload_resume, receive_result, result_status, analyze, g
 app = FastAPI(title="JDMatcher Backend")
 
 origins = [
-    "http://localhost:5678",
-    "http://localhost:5173",
     "http://127.0.0.1:5678",
     "http://127.0.0.1:5173",
+    "http://jdmatcher.s3-website-us-east-1.amazonaws.com"  # Add your S3 bucket URL here
 ]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,  # Only allow requests from these origins
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
 )
 
 app.include_router(upload_resume.router, prefix="/api", tags=["upload-resume"])
@@ -29,3 +26,7 @@ app.include_router(get_result.router, prefix="/api", tags=["get-result"])
 @app.get("/")
 def read_root():
     return {"message": "Hello from JDMatcher backend!"}
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
