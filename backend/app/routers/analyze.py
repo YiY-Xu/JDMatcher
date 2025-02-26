@@ -31,7 +31,7 @@ async def initiate_analysis(request: AnalyzeRequest):
         
         # Use httpx AsyncClient to call the remote analysis endpoint
         async with httpx.AsyncClient() as client:
-            response = await client.get("http://localhost:5678/webhook/job-description", params={"data": param_value})
+            response = await client.get("http://127.0.0.1:5678/webhook/job-description", params={"data": param_value})
         
         remote_result = response.json()
         print(f"remote wf triggered : {remote_result}")
