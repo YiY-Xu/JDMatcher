@@ -8,6 +8,7 @@ app = FastAPI(title="JDMatcher Backend")
 origins = [
     "http://127.0.0.1:5678",
     "http://127.0.0.1:5173",
+    "http://localhost:5173",
     "https://jdmatcher.umagicv.com"  # Add your S3 bucket URL here
 ]
 

@@ -39,9 +39,11 @@ def generate_presigned_url(filename: str, content_type: str, file_hash: str = ''
                     "version_id": version_id
                 }
         except ClientError as e:
-            # If error code is 404, the file does not exist; otherwise, return the error.
-            if e.response["Error"]["Code"] != "404":
+            # If error code is 404, the file does not exist - continue to generate URL
+            error_code = e.response.get("Error", {}).get("Code")
+            if error_code != "404":
                 return {"error": str(e)}
+            # For 404 errors, we'll continue to generate the presigned URL below
     
     # Generate a presigned URL to put the object including the content type.
     try:

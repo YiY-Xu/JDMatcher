@@ -50,7 +50,9 @@ function Report({ data }) {
           </p>
         </div>
         <div className={`score-badge ${getScoreClass(data.fitScore)}`}>
-          {data.fitScore}/10
+          {data.fitScore.toString().includes('/10') 
+            ? data.fitScore 
+            : `${data.fitScore}/10`}
         </div>
       </div>
 

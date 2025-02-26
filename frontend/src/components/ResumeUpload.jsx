@@ -70,7 +70,7 @@ function ResumeUpload({ onFileUpload }) {
         onFileUpload(uniqueResumeIdentifier);
       } 
     } catch (error) {
-      console.error("Upload error:", error);
+      console.error(error);
       setUploadError("Failed to upload file: " + error.message);
     } finally {
       setUploading(false);
