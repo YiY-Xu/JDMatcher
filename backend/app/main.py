@@ -8,13 +8,15 @@ app = FastAPI(title="JDMatcher Backend")
 origins = [
     "http://127.0.0.1:5678",
     "http://127.0.0.1:5173",
-    "http://jdmatcher.s3-website-us-east-1.amazonaws.com"  # Add your S3 bucket URL here
+    "https://jdmatcher.umagicv.com"  # Add your S3 bucket URL here
 ]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,  # Only allow requests from these origins
     allow_credentials=True,
+    allow_methods=["*"],  # Explicitly allow required methods
+    allow_headers=["*"], 
 )
 
 app.include_router(upload_resume.router, prefix="/api", tags=["upload-resume"])
