@@ -19,7 +19,7 @@ async def initiate_analysis(request: AnalyzeRequest):
 
     # Check if status already exists in Redis.
     status = await r.get(compound_key)
-    if status:
+    if status != "COMPLETED":
         return {"status": status.decode("utf-8"), "compound_key": compound_key}
     
     # Construct the parameter value as "resumeName,jobUrl"

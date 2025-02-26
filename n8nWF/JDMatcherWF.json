@@ -3,21 +3,21 @@
   "nodes": [
     {
       "parameters": {
-        "bucketName": "retalking",
+        "bucketName": "jdmatcher-resumes",
         "fileKey": "={{ $json.key }}",
         "binaryPropertyName": "resume"
       },
       "type": "n8n-nodes-base.awsS3",
       "typeVersion": 2,
       "position": [
-        -220,
-        -220
+        -820,
+        140
       ],
-      "id": "fc86b33f-26f2-447f-94ba-4a015f98b9d8",
+      "id": "14981956-e8ca-421f-817b-6a21bf7c108a",
       "name": "AWS S3",
       "credentials": {
         "aws": {
-          "id": "V6OTm81yzKTIuonU",
+          "id": "iPp7YZIX3MXHWyTJ",
           "name": "AWS account"
         }
       }
@@ -50,17 +50,17 @@
         },
         "options": {}
       },
-      "id": "fc486433-49aa-4816-b786-0effe452aaea",
+      "id": "36dc72c7-9b1b-4f6c-831c-521e97b1d405",
       "name": "Upload to LlamaParse",
       "type": "n8n-nodes-base.httpRequest",
       "position": [
-        -20,
-        -220
+        -620,
+        140
       ],
       "typeVersion": 4.2,
       "credentials": {
         "httpHeaderAuth": {
-          "id": "wZ4m6ncwxPlvxffe",
+          "id": "vthc108eKueyVJFn",
           "name": "Header Auth account"
         }
       }
@@ -81,17 +81,17 @@
         },
         "options": {}
       },
-      "id": "498cdddb-ea2e-47b4-b5d1-49cf50df0872",
+      "id": "aafb75cf-6138-4209-975d-6c9bde687681",
       "name": "Get Processing Status",
       "type": "n8n-nodes-base.httpRequest",
       "position": [
-        180,
-        -220
+        -420,
+        140
       ],
       "typeVersion": 4.2,
       "credentials": {
         "httpHeaderAuth": {
-          "id": "wZ4m6ncwxPlvxffe",
+          "id": "vthc108eKueyVJFn",
           "name": "Header Auth account"
         }
       }
@@ -100,12 +100,12 @@
       "parameters": {
         "amount": 1
       },
-      "id": "2bc1ed1d-d357-4817-9fa0-c930debb94bf",
+      "id": "e940e8ca-3b8d-42d5-b98d-e612560c8984",
       "name": "Wait to stay within service limits",
       "type": "n8n-nodes-base.wait",
       "position": [
-        600,
-        -160
+        0,
+        200
       ],
       "webhookId": "17a96ed6-b5ff-47bb-a8a2-39c1eb40185a",
       "typeVersion": 1.1
@@ -220,12 +220,12 @@
           "allMatchingOutputs": true
         }
       },
-      "id": "f3d67b1e-dd05-4ac5-8108-a6512bed0ae5",
+      "id": "1dda070e-bd1d-46ec-8c58-2f0dadd3e71d",
       "name": "Is Job Ready?",
       "type": "n8n-nodes-base.switch",
       "position": [
-        360,
-        -240
+        -240,
+        120
       ],
       "typeVersion": 3
     },
@@ -240,17 +240,17 @@
           }
         }
       },
-      "id": "ffea205a-b502-4a62-888c-fd3a698fdb55",
+      "id": "87ac6dac-e612-4d48-8579-f8e0c66aa521",
       "name": "Get Parsed Resume",
       "type": "n8n-nodes-base.httpRequest",
       "position": [
-        600,
-        -360
+        0,
+        0
       ],
       "typeVersion": 4.2,
       "credentials": {
         "httpHeaderAuth": {
-          "id": "wZ4m6ncwxPlvxffe",
+          "id": "vthc108eKueyVJFn",
           "name": "Header Auth account"
         }
       }
@@ -263,16 +263,16 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -400,
-        -60
+        -980,
+        300
       ],
-      "id": "aca0fcde-6f10-4288-a19d-ea5955cfc81d",
+      "id": "c3c412f8-8ba0-451b-9908-f98f1c0a35d2",
       "name": "Code"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "http://localhost:11235/crawl",
+        "url": "http://127.0.0.1:11235/crawl",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
@@ -289,15 +289,15 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        -220,
-        100
+        -820,
+        460
       ],
-      "id": "68b67969-f180-4db6-aee5-960aa584fd01",
+      "id": "2c14f06a-831e-4506-b726-5ff23124111c",
       "name": "HTTP Request",
       "credentials": {
         "httpHeaderAuth": {
-          "id": "iddcfCpEFFAq629u",
-          "name": "WebcrawlerAuth"
+          "id": "uboG6apCYxov16gW",
+          "name": "Crawl4ai"
         }
       }
     },
@@ -314,14 +314,14 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        820,
-        -160
+        220,
+        200
       ],
-      "id": "3056f915-f10f-457f-9955-7a32826c115c",
+      "id": "c5914749-2a77-4dde-b02b-f68b58eef91d",
       "name": "OpenAI Chat Model1",
       "credentials": {
         "openAiApi": {
-          "id": "K4RL39uEbZVOU2Ea",
+          "id": "E8oFzg7plveV7f99",
           "name": "OpenAi account"
         }
       }
@@ -333,10 +333,10 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        980,
-        -160
+        380,
+        200
       ],
-      "id": "0ccc7210-ba34-42a4-93cd-d99223853796",
+      "id": "59de42e3-487f-4aed-9d8d-ea14646fbf06",
       "name": "Structured Output Parser"
     },
     {
@@ -352,14 +352,14 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        740,
-        260
+        140,
+        620
       ],
-      "id": "be1dd707-5962-4359-9db7-d1c7773f97c1",
+      "id": "4fb18fae-810a-49bf-9694-01d0fd384163",
       "name": "OpenAI Chat Model2",
       "credentials": {
         "openAiApi": {
-          "id": "K4RL39uEbZVOU2Ea",
+          "id": "E8oFzg7plveV7f99",
           "name": "OpenAi account"
         }
       }
@@ -371,10 +371,10 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.2,
       "position": [
-        900,
-        260
+        300,
+        620
       ],
-      "id": "7a610180-e674-4d70-8008-75ffa80d3875",
+      "id": "5bdba257-d9d0-4476-b03b-8e7372d5b3f7",
       "name": "Structured Output Parser1"
     },
     {
@@ -384,10 +384,10 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        20,
-        100
+        -580,
+        460
       ],
-      "id": "9d5862d8-c6b3-4658-aa29-e719f73e3304",
+      "id": "166ba564-ed07-4519-b258-b57f43867d0d",
       "name": "Wait",
       "webhookId": "bbb141c6-1674-4b28-8ea9-4501faf95586"
     },
@@ -401,15 +401,15 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        220,
-        100
+        -380,
+        460
       ],
-      "id": "0f46b157-6257-44ec-a9e7-822e677e8c7d",
+      "id": "d88189bb-c1b2-49c3-a2d8-8c38e3a0a3fe",
       "name": "HTTP Request1",
       "credentials": {
         "httpHeaderAuth": {
-          "id": "iddcfCpEFFAq629u",
-          "name": "WebcrawlerAuth"
+          "id": "uboG6apCYxov16gW",
+          "name": "Crawl4ai"
         }
       }
     },
@@ -441,10 +441,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        420,
-        100
+        -180,
+        460
       ],
-      "id": "d3f49a83-8a2a-46bd-9518-413e806ba0d2",
+      "id": "683251e9-d6e6-40dd-9afa-c433e57e7bc8",
       "name": "If"
     },
     {
@@ -452,10 +452,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
-        1200,
-        -60
+        600,
+        300
       ],
-      "id": "de2afc58-2a78-40e5-b073-5438e8a913d0",
+      "id": "96fcf2d2-efa4-4636-8fa7-877b9260f497",
       "name": "Merge"
     },
     {
@@ -465,10 +465,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1380,
-        -60
+        780,
+        300
       ],
-      "id": "062b9b8e-83a8-40d9-bd9a-437482d736e1",
+      "id": "e88ad1ba-50d4-408b-85ce-8f4f984e3eb5",
       "name": "Code1"
     },
     {
@@ -487,14 +487,14 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
       "position": [
-        1600,
-        -60
+        1000,
+        300
       ],
-      "id": "962f08ef-a224-44a8-be66-aed1b43bb5c1",
+      "id": "7641523a-765f-4663-8374-5a08e34b7491",
       "name": "OpenAI",
       "credentials": {
         "openAiApi": {
-          "id": "K4RL39uEbZVOU2Ea",
+          "id": "E8oFzg7plveV7f99",
           "name": "OpenAi account"
         }
       }
@@ -508,10 +508,10 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.5,
       "position": [
-        820,
-        -360
+        220,
+        0
       ],
-      "id": "f6f712ac-ff75-4b7c-9bb1-e18b9f05e44f",
+      "id": "c65080e5-332d-4bb2-a7ec-8dd95f5ee775",
       "name": "Resume Analyzer"
     },
     {
@@ -523,26 +523,11 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.5,
       "position": [
-        740,
-        80
+        140,
+        440
       ],
-      "id": "9d58225f-ae8c-40c6-b376-321820387503",
+      "id": "3a687a0a-b180-4274-8140-59c186ad7e4d",
       "name": "Position Analyzer"
-    },
-    {
-      "parameters": {
-        "path": "job-description",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2,
-      "position": [
-        -580,
-        -60
-      ],
-      "id": "df086905-4014-417c-8ea9-fca9d7e67daa",
-      "name": "Webhook Trigger",
-      "webhookId": "42df80e5-be83-4bc3-a574-86073f12cd53"
     },
     {
       "parameters": {
@@ -556,10 +541,10 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1800,
-        200
+        1200,
+        560
       ],
-      "id": "1038d21a-8133-4d78-8414-7578405b2c9b",
+      "id": "3b048a98-b313-48e6-83d5-01e41960a58e",
       "name": "HTTP Request2"
     },
     {
@@ -567,10 +552,10 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
-        1340,
-        200
+        740,
+        560
       ],
-      "id": "bfb96bc5-74ea-4546-b9e7-1c55aabd4392",
+      "id": "6e1b6f5d-554a-4196-bfa4-0577a93a8460",
       "name": "Merge1"
     },
     {
@@ -580,11 +565,26 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1560,
-        200
+        960,
+        560
       ],
-      "id": "d2b7e87d-2da1-49a2-af24-2e0271a68c12",
+      "id": "3a818977-4b53-4b7f-b12c-431b0d2b9da8",
       "name": "Code2"
+    },
+    {
+      "parameters": {
+        "path": "job-description",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1200,
+        300
+      ],
+      "id": "8d0d05ac-8548-49e8-a8aa-a32921bc4dc4",
+      "name": "Webhook",
+      "webhookId": "b4acd6f3-d68d-4845-9789-9d92962b5478"
     }
   ],
   "pinData": {
@@ -607,14 +607,14 @@
             "index": 0
           },
           {
-            "node": "HTTP Request",
-            "type": "main",
-            "index": 0
-          },
-          {
             "node": "Merge1",
             "type": "main",
             "index": 1
+          },
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -866,7 +866,7 @@
         ]
       ]
     },
-    "Webhook Trigger": {
+    "Webhook": {
       "main": [
         [
           {
@@ -882,11 +882,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "cb9a43a1-d97f-4f9d-b3ca-8d899ca7e520",
+  "versionId": "f811f62b-e77d-455f-9fba-80f6e4a56e09",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "3c2b0db3abb6f97db96ac37d66a18a2ecefa1dab268d539602caf9d1beeb942a"
+    "instanceId": "712d20278a7616ae1adc900f414ac4e4c5999eaa48fe9ce742b996b38e056d58"
   },
-  "id": "eo1xXZ0nIVUKjsKP",
+  "id": "ZGAgOB78G88Jha2N",
   "tags": []
 }
