@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import SparkMD5 from 'spark-md5';
-import { Upload, CheckCircle, FileUp } from 'lucide-react'; // Assumed you'll install lucide-react
+import { Upload, CheckCircle } from 'lucide-react';
 import { UPLOAD_RESUME_ENDPOINT } from '../config';
 
 // Utility function to compute MD5 hash of a file as an ArrayBuffer.
@@ -25,9 +25,10 @@ function ResumeUpload({ onFileUpload }) {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
   const [uploadMessage, setUploadMessage] = useState("");
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef(null);
 
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
+  const processFile = async (file) => {
     if (!file) return;
     setSelectedFile(file);
     setUploadError(null);
@@ -70,16 +71,58 @@ function ResumeUpload({ onFileUpload }) {
         onFileUpload(uniqueResumeIdentifier);
       } 
     } catch (error) {
-      console.error(error);
+      console.error("Upload error:", error);
       setUploadError("Failed to upload file: " + error.message);
     } finally {
       setUploading(false);
     }
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      processFile(file);
+    }
+  };
+
+  // Drag and drop handlers
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const file = e.dataTransfer.files[0];
+      processFile(file);
+    }
+  };
+
   return (
     <div className="component-container">
-      <div className={`upload-container ${selectedFile && !uploadError ? 'active' : ''}`}>
+      <div 
+        className={`upload-container ${isDragging ? 'dragging' : ''} ${selectedFile && !uploadError ? 'active' : ''}`}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+      >
         {selectedFile && !uploadError ? (
           <div className="text-center">
             <CheckCircle size={36} className="mx-auto mb-2 text-success" />
@@ -91,6 +134,7 @@ function ResumeUpload({ onFileUpload }) {
                 type="file"
                 className="upload-input"
                 onChange={handleFileChange}
+                ref={fileInputRef}
               />
             </label>
           </div>
@@ -105,6 +149,7 @@ function ResumeUpload({ onFileUpload }) {
                 type="file"
                 className="upload-input"
                 onChange={handleFileChange}
+                ref={fileInputRef}
               />
             </label>
           </div>

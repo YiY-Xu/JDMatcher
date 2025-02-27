@@ -1,142 +1,228 @@
 .form-group {
-    margin-bottom: var(--space-4);
-  }
-  
-  .form-label {
-    display: block;
-    font-size: var(--font-size-sm);
-    font-weight: 500;
-    margin-bottom: var(--space-1);
-    color: var(--color-gray-700);
-  }
-  
-  .form-input {
-    width: 100%;
-    padding: var(--space-2) var(--space-3);
-    border: 1px solid var(--color-gray-300);
-    border-radius: var(--radius-lg);
-    font-size: var(--font-size-base);
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  .form-input:focus {
-    outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-  }
-  
-  .form-input::placeholder {
-    color: var(--color-gray-500);
-  }
-  
-  .upload-container {
-    border: 2px dashed var(--color-gray-300);
-    border-radius: var(--radius-lg);
-    padding: var(--space-6);
-    text-align: center;
-    transition: border-color 0.2s ease;
-    margin-bottom: var(--space-4);
-  }
-  
-  .upload-container:hover {
-    border-color: var(--color-primary);
-  }
-  
-  .upload-container.active {
-    border-color: var(--color-success);
-    background-color: rgba(34, 197, 94, 0.05);
-  }
-  
-  .upload-label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: var(--space-2);
-  }
-  
-  .upload-input {
-    display: none;
-  }
-  
-  .upload-button {
-    display: inline-block;
-    background-color: var(--color-primary);
-    color: white;
-    padding: var(--space-2) var(--space-4);
-    border-radius: var(--radius-lg);
-    cursor: pointer;
-    font-weight: 500;
-    margin-top: var(--space-3);
-  }
-  
-  .upload-status {
-    margin-top: var(--space-2);
-    font-size: var(--font-size-sm);
-  }
-  
-  .status-success {
-    color: var(--color-success);
-  }
-  
-  .status-error {
-    color: var(--color-danger);
-  }
+  margin-bottom: var(--space-4);
+}
 
-/* Add to src/styles/components/_form.css */
+.form-label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  margin-bottom: var(--space-1);
+  color: var(--color-gray-700);
+}
+
+.form-input {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-base);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-input::placeholder {
+  color: var(--color-gray-500);
+}
+
+.upload-container {
+  border: 2px dashed var(--color-gray-300);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  text-align: center;
+  transition: border-color 0.2s ease;
+  margin-bottom: var(--space-4);
+}
+
+.upload-container:hover {
+  border-color: var(--color-primary);
+}
+
+.upload-container.active {
+  border-color: var(--color-success);
+  background-color: rgba(34, 197, 94, 0.05);
+}
+
+.upload-container.dragging {
+  border-color: var(--color-primary);
+  background-color: rgba(79, 70, 229, 0.05);
+}
+
+.upload-label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: var(--space-2);
+}
+
+.upload-input {
+  display: none;
+}
+
+.upload-button {
+  display: inline-block;
+  background-color: var(--color-primary);
+  color: white;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  font-weight: 500;
+  margin-top: var(--space-3);
+}
+
+.upload-status {
+  margin-top: var(--space-2);
+  font-size: var(--font-size-sm);
+}
+
+.status-success {
+  color: var(--color-success);
+}
+
+.status-error {
+  color: var(--color-danger);
+}
 
 .input-button-row {
-    display: flex;
-    gap: 8px;
-    align-items: stretch;
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.job-input-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.job-input-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  z-index: 1;
+}
+
+.job-input {
+  width: 100%;
+  height: 100%;
+  padding: 10px 12px 10px 36px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.button-group {
+  display: flex;
+  gap: 8px;
+}
+
+.analyze-btn, .reset-btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.analyze-btn {
+  background-color: #e5e7eb;
+  border: none;
+  color: #374151;
+}
+
+.analyze-btn.enabled {
+  background-color: #4f46e5;
+  color: white;
+  cursor: pointer;
+}
+
+.analyze-btn.enabled:hover {
+  background-color: #4338ca;
+}
+
+.analyze-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.reset-btn {
+  background-color: white;
+  border: 1px solid #d1d5db;
+  color: #374151;
+}
+
+.progress-spinner {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(79, 70, 229, 0.2);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
-  
-  .job-input-wrapper {
-    position: relative;
-    flex: 1;
-  }
-  
-  .job-input-icon {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #6b7280;
-    z-index: 1;
-  }
-  
-  .job-input {
-    width: 100%;
-    height: 100%;
-    padding: 10px 12px 10px 36px;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 16px;
-  }
-  
-  .button-group {
-    display: flex;
-    gap: 8px;
-  }
-  
-  .analyze-btn, .reset-btn {
-    padding: 10px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-  
-  .analyze-btn {
-    background-color: #e5e7eb;
-    border: none;
-    color: #374151;
-  }
-  
-  .analyze-btn:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-  
-  .reset-btn {
-    background-color: white;
-    border: 1px solid #d1d5db;
-    color: #374151;
-  }
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.text-success {
+  color: var(--color-success);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.text-gray-500 {
+  color: #6b7280;
+}
+
+.text-gray-600 {
+  color: #4b5563;
+}
+
+.mt-1 {
+  margin-top: 0.25rem;
+}
+
+.mt-3 {
+  margin-top: 0.75rem;
+}
+
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.inline-block {
+  display: inline-block;
+}
